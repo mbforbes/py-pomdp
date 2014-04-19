@@ -2,17 +2,6 @@
 
 A small tool to parse POMDP environments and policies, load them into Python objects, and provide methods for belief updates and accessing data.
 
-## File specifications
-
-### Environment (`.pomdp`)
-For the supported POMDP environment spec, see [Tony's POMDP file format description](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-spec.html)
-
-I built the tool to work with the semantics described on that page, without consulting the [formal grammar](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-grammar.html). If anyone uses this tool and discovers it lacks support for syntax they require, I welcome issues as well as pull requests!
-
-### Policy (`.policy`)
-
-The supported POMDP policy is a list of alpha vectors; see APPL for more info (it outputs this format), the file in this repository `examples/policy/voicemail.policy` for an example, and [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html) to learn what's going on.
-
 ## Usage
 
 ### Loading
@@ -97,6 +86,17 @@ Round 3
     - expected reward: 5.14634218527
     - belief:          [array([ 0.65]), array([ 0.35])]
 ```
+
+## File specifications
+
+### Environment (`.pomdp`)
+For the supported POMDP environment spec, see [Tony's POMDP file format description](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-spec.html)
+
+I built the tool to work with the semantics described on that page, without consulting the [formal grammar](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-grammar.html). If anyone uses this tool and discovers it lacks support for syntax they require, I welcome issues as well as pull requests!
+
+### Policy (`.policy`)
+
+The supported POMDP policy is a list of alpha vectors; see APPL for more info (it outputs this format), the file in this repository `examples/policy/voicemail.policy` for an example, and [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html) to learn what's going on.
 
 ## Tests
 You can run the environment parser test (loads from `examples/env/env_parser_test.pomdp`) as follows:
