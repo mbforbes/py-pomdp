@@ -6,7 +6,7 @@ A small tool to parse POMDP environments and policies, load them into Python obj
 
 ### Loading
 
-The following code shows example usage with the POMDP 'Voicemail' (modified 'tiger room') scenario described by Jason Williams in [this paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf). All relevant files are provided in the `examples/` directory.
+The following code shows example usage with the POMDP 'voicemail' (modified 'tiger room') scenario described by Jason Williams in [this paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf). All relevant files are provided in the `examples/` directory.
 
 ```python
 import numpy as np
@@ -101,7 +101,10 @@ I built the tool to work with the semantics described on that page, without cons
 
 ### Policy (`.policy`)
 
-The supported POMDP policy is a list of alpha vectors; see APPL for more info (it outputs this format), the file in this repository `examples/policy/voicemail.policy` for an example, and [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html) to learn what's going on.
+The supported POMDP policy is a list of alpha vectors in XML. For more info, see:
+* the file `examples/policy/voicemail.policy` in this repository for an example
+* [APPL](http://bigbird.comp.nus.edu.sg/pmwiki/farm/appl/index.php?n=Main.HomePage) for a solver that outputs this format
+* [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html) to learn more about approximate solvers and the policies they produce
 
 ## Tests
 You can run the environment parser test (loads from `examples/env/env_parser_test.pomdp`) as follows:
