@@ -1,0 +1,65 @@
+# POMDP environment to allow for detecting novel user states.
+# author: mbforbes
+
+discount: 0.95
+values: reward
+states: heavy light novel
+actions: ask sayHeavy sayLight sayNovel
+observations: hearHeavy hearLight hearNovel
+
+# Transitions:
+# * asking doesn't change the underlying state
+# * saying something resets to the prior, which is currently
+# 0.4 heavy, 0.4 light, 0.2 novel.
+
+T: ask
+identity
+
+T: sayHeavy
+0.4 0.4 0.2
+0.4 0.4 0.2
+0.4 0.4 0.2
+
+T: sayLight
+0.4 0.4 0.2
+0.4 0.4 0.2
+0.4 0.4 0.2
+
+T: sayNovel
+0.4 0.4 0.2
+0.4 0.4 0.2
+0.4 0.4 0.2
+
+# Observations:
+# * assumes currently: 0.7 chance of hearing the thing you want to hear
+# * 0.01 chance of hearing the wrong thing
+# * 0.29 of novel thing 
+
+O: ask
+0.7 0.01 0.29
+0.01 0.7 0.29
+0.1 0.1 0.8
+
+O: sayHeavy
+uniform
+
+O: sayLight
+uniform
+
+O: sayNovel
+uniform
+
+# Reward will probably be the biggest tuning factor...
+R: ask : * : * : * -1
+
+R: sayHeavy : heavy : * : * 5
+R: sayHeavy : light : * : * -10
+R: sayHeavy : novel : * : * -2
+
+R: sayLight : light : * : * 5
+R: sayLight : heavy : * : * -10
+R: sayLight : novel : * : * -2
+
+R: sayNovel : novel : * : * 5
+R: sayNovel : light : * : * -2
+R: sayNovel : heavy : * : * -2

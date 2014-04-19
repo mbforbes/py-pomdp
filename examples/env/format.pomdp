@@ -1,0 +1,99 @@
+# POMDP file format documentation with examples.
+# author: mbforbes
+
+# Full file spec here:
+# http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-spec.html
+
+##########
+# HEADER #
+##########
+
+discount: %f (0.95)
+
+# can have reward, cost
+values: reward
+
+# can have %d instead, which will be the number of states (names will be nums)
+states: <list of states> (save delete)
+
+# can have %d instead
+actions: <list of actions> (ask doSave doDelete)
+
+# can have %d instead
+observations: <list of observations> (hearSave hearDelete)
+
+###############
+# TRANSITIONS #
+###############
+
+# Description: Probability of reaching <next-state> given you started in
+# <start-state> and took <action>. P(<next-state> | <start-state>, <action>).
+
+# Notation 1: fully specified
+T: <action> : <start-state> : <next-state> %f
+
+# Notation 2: list of %f, one for each next-state
+T: <action> : <start-state>
+%f %f ... %f
+
+# Notation 3: matrix of %f; each row is a start-state, columns are next-states
+T: <action>
+%f %f ... %f
+%f %f ... %f
+...
+%f %f ... %f
+
+# Notation 4: identity or uniform; these are used in place of a matrix
+T: <action>
+identity
+
+################
+# OBSERVATIONS #
+################
+
+# Description: Probability of seeing <obs> given you took <action> and reached
+# <next-state>. P(<obs> | <action>, <next-state>).
+
+# Notation 1: fully specified
+O: <action> : <next-state> : <obs> %f
+
+# Notation 2: list of %f, one for each observation
+O: <action> : <next-state>
+%f %f ... %f
+
+# Notation 3: matrix of %f; each row is a next-state, columns are observations
+O: <action>
+%f %f ... %f
+%f %f ... %f
+...
+%f %f ... %f
+
+# Notation 4: identity or uniform; these are used in place of a matrix
+O: <action>
+identity
+
+##########
+# REWARD #
+##########
+
+# R | <start-state>, <action>, <next-state>, <obs>
+
+# Notation 1: full specification
+R: <action> : <start-state> : <next-state> : <obs> %f
+
+# Notation 2: asterisks are wildcards
+R: ask : * : * : * -1
+
+# or
+R: doSave : save : * : * 5
+
+# Notation 3: list of %f, one for each observation
+R: <action> : <start-state> : <next-state>
+%f %f ... %f
+
+# Notation 4: matrix of %f; each row is a next-state, columns are observations
+R: <action> : <start-state>
+%f %f ... %f
+%f %f ... %f
+...
+%f %f ... %f
