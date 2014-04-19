@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Policy version="0.1" type="value" model="/Users/max/school/research/repo/code/pomdp/interaction/models/voicemail.pomdp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="policyx.xsd">
+<Policy version="0.1" type="value" model="../env/voicemail.pomdp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="policyx.xsd">
 <AlphaVector vectorLength="2" numObsValue="1" numVectors="47">
 <Vector action="0" obsValue="0">2.42346 2.47172 </Vector>
 <Vector action="0" obsValue="0">4.81868 0.636862 </Vector>
