@@ -6,9 +6,10 @@ A small tool to parse POMDP environments and policies, load them into Python obj
 
 ### Loading
 
-The following code shows example usage with the POMDP 'Voicemail' (modified tiger room) scenario described by Jason Williams in [this paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf). All relevant files are provided in the `examples/` directory.
+The following code shows example usage with the POMDP 'Voicemail' (modified 'tiger room') scenario described by Jason Williams in [this paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf). All relevant files are provided in the `examples/` directory.
 
 ```python
+import numpy as np
 from pomdp import *
 
 # Filenames.
@@ -43,48 +44,52 @@ observations = ['hearDelete', 'hearSave', 'hearSave']
 obs_idx = 0
 best_action_str = None
 while True:
-    print 'Round', obs_idx
+    print 'Round', obs_idx + 1
     best_action_num, expected_reward = pomdp.get_best_action()
     best_action_str = pomdp.get_action_str(best_action_num)
     print '\t- action:         ', best_action_str
     print '\t- expected reward:', expected_reward
     if best_action_str != 'ask':
-        # We have a 'terminal' action (either 'save' or 'delete')
+        # We have a 'terminal' action (either 'doSave' or 'doDelete')
         break
     else:
         # The action is 'ask': Provide our next observation.
         obs_str = observations[obs_idx]
         obs_idx += 1
+        print '\t- obs given:      ', obs_str
         obs_num = pomdp.get_obs_num(obs_str)
         pomdp.update_belief(best_action_num, obs_num)
         # Show beliefs
-        print '\t- belief:         ', list(pomdp.belief)
+        print '\t- belief:         ', np.round(pomdp.belief.flatten(), 3)
 
 # Take the 'terminal' action, and beliefs should be reset to prior.
 best_action_num, expected_reward = pomdp.get_best_action()
 pomdp.update_belief(best_action_num,
     pomdp.get_obs_num('hearSave')) # Observation doesn't affect this action.
-print '\t- belief:         ', list(pomdp.belief)
+print '\t- belief:         ', np.round(pomdp.belief.flatten(), 3)
 ```
 
 The following will be output:
 ```
-Round 0
-    - action:          ask
-    - expected reward: 3.4619529
-    - belief:          [array([ 0.34666667]), array([ 0.65333333])]
 Round 1
-    - action:          ask
-    - expected reward: 2.91002333333
-    - belief:          [array([ 0.58591549]), array([ 0.41408451])]
+	- action:          ask
+	- expected reward: 3.4619529
+	- obs given:       hearDelete
+	- belief:          [ 0.347  0.653]
 Round 2
-    - action:          ask
-    - expected reward: 3.13453841127
-    - belief:          [array([ 0.79049881]), array([ 0.20950119])]
+	- action:          ask
+	- expected reward: 2.91002333333
+	- obs given:       hearSave
+	- belief:          [ 0.586  0.414]
 Round 3
-    - action:          doSave
-    - expected reward: 5.14634218527
-    - belief:          [array([ 0.65]), array([ 0.35])]
+	- action:          ask
+	- expected reward: 3.13453841127
+	- obs given:       hearSave
+	- belief:          [ 0.79  0.21]
+Round 4
+	- action:          doSave
+	- expected reward: 5.14634218527
+	- belief:          [ 0.65  0.35]
 ```
 
 ## File specifications
