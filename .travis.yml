@@ -5,7 +5,7 @@ install:
 # Because compiling numpy from source is stupid, error-prone, and takes forever
 	- sudo apt-get install python-numpy
 # The rest
-    - sudo pip install elementtree pep8 pytest coverage python-coveralls --allow-external elementtree --allow-unverified elementtree
+    - sudo pip install elementtree pep8 coverage python-coveralls --allow-external elementtree --allow-unverified elementtree
 script:
 # Lint
     - pep8 pomdp.py test/tester.py
