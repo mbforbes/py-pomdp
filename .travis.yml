@@ -2,7 +2,7 @@ language: python
 python:
     - "2.7"
 install:
-    - sudo pip install elementtree
+    - sudo pip install --allow-external elementtree
     - sudo pip install -r requirements.txt
 script:
     - pep8 pomdp.py test/tester.py
