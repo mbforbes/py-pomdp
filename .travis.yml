@@ -2,7 +2,10 @@ language: python
 python:
     - "2.7"
 install:
-    - sudo pip install -r requirements.txt --allow-external elementtree --allow-unverified elementtree
+# Because compiling numpy from source is stupid, error-prone, and takes forever
+	- sudo apt-get install python-numpy
+# The rest
+    - sudo pip install elementtree pep8 pytest coverage python-coveralls --allow-external elementtree --allow-unverified elementtree
 script:
     - pep8 pomdp.py test/tester.py
     - coverage run --source pomdp -m test.tester
