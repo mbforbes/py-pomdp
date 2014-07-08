@@ -1,10 +1,10 @@
 '''Loading POMDP environment files and policy files into python objects.
-   Contains methods to perform POMDP tasks, like finding the optimal action and
-   updating the belief.
+   Contains methods to perform POMDP tasks, like finding the optimal
+   action and updating the belief.
 
-   TODO: check model after construction to provide sanity check for specified
-         pomdp environment (e.g. observation and transition probabilities sum to
-         1.0)
+   TODO(mbforbes): Check model after construction to provide sanity
+        check for specified pomdp environment (e.g. observation and
+        transition probabilities sum to 1.0)
 '''
 
 __author__ = 'mbforbes'
@@ -14,6 +14,7 @@ from elementtree.ElementTree import *
 
 # matrix math
 from numpy import *
+
 
 class POMDP:
     '''
@@ -37,8 +38,8 @@ class POMDP:
 
     def get_action_str(self, action_num):
         '''
-        Returns a string representing the action with the given num. This is the
-        name given to it in the pomdp environment file.
+        Returns a string representing the action with the given num.
+        This is the name given to it in the pomdp environment file.
         '''
         return self.pomdpenv.actions[action_num]
 
@@ -54,7 +55,8 @@ class POMDP:
 
     def get_best_action(self):
         '''
-        Returns tuple (best_action_num, expected_reward_for_this_action).
+        Returns tuple (best_action_num,
+        expected_reward_for_this_action).
         '''
         return self.pomdppolicy.get_best_action(self.belief)
 
@@ -66,8 +68,8 @@ class POMDP:
         return self.pomdpenv.observations.index(obs_name)
 
     def update_belief(self, action_num, observation_num):
-        self.belief = self.pomdpenv.update_belief(self.belief, action_num, \
-            observation_num)
+        self.belief = self.pomdpenv.update_belief(
+            self.belief, action_num, observation_num)
 
     def belief_dump(self):
         '''
@@ -92,6 +94,7 @@ class POMDP:
         # restore to old belief
         self.belief = old_belief
 
+
 class POMDPEnvironment:
     def __init__(self, filename):
         '''
@@ -108,8 +111,10 @@ class POMDPEnvironment:
             R
         '''
         f = open(filename, 'r')
-        self.contents = [x.strip() for x in f.readlines()
-            if (not (x.startswith("#") or x.isspace()))]
+        self.contents = [
+            x.strip() for x in f.readlines()
+            if (not (x.startswith("#") or x.isspace()))
+        ]
 
         # set up transition function T, observation function Z, and reward R
         self.T = {}
@@ -135,7 +140,7 @@ class POMDPEnvironment:
             elif line.startswith('O'):
                 i = self.__get_observation(i)
             elif line.startswith('R'):
-                i = self.__get_reward(i)            
+                i = self.__get_reward(i)
             else:
                 raise Exception("Unrecognized line: " + line)
 
@@ -179,7 +184,7 @@ class POMDPEnvironment:
             start_state = self.states.index(pieces[1])
             next_state = self.states.index(pieces[2])
             prob = float(pieces[3])
-            self.T[(action,start_state, next_state)] = prob
+            self.T[(action, start_state, next_state)] = prob
             return i + 1
         elif len(pieces) == 3:
             # case 2: T: <action> : <start-state> : <next-state>
@@ -188,7 +193,7 @@ class POMDPEnvironment:
             next_state = self.states.index(pieces[2])
             next_line = self.contents[i+1]
             prob = float(next_line)
-            self.T[(action,start_state, next_state)] = prob
+            self.T[(action, start_state, next_state)] = prob
             return i + 2
         elif len(pieces) == 2:
             # case 3: T: <action> : <start-state>
@@ -322,8 +327,8 @@ class POMDPEnvironment:
             obs_raw = pieces[3]
             prob = float(pieces[4]) if len(pieces) == 5 \
                 else float(self.contents[i+1])
-            self.__reward_ss(action, start_state_raw, next_state_raw, obs_raw, \
-                prob)
+            self.__reward_ss(
+                action, start_state_raw, next_state_raw, obs_raw, prob)
             return i + 1 if len(pieces) == 5 else i + 2
         elif len(pieces == 3):
             # case 2: R: <action> : <start-state> : <next-state>
@@ -345,7 +350,7 @@ class POMDPEnvironment:
             # %f %f ... %f
             start_state = self.states.index(pieces[1])
             next_line = self.contents[i+1]
-            for j in range(len(self.states)):               
+            for j in range(len(self.states)):
                 probs = next_line.split()
                 assert len(probs) == len(self.observations)
                 for k in range(len(probs)):
@@ -354,7 +359,7 @@ class POMDPEnvironment:
                 next_line = self.contents[i+2+j]
             return i + 1 + len(self.states)
         else:
-            raise Exception("Cannot parse line: " + line)           
+            raise Exception("Cannot parse line: " + line)
 
     def __reward_ss(self, a, start_state_raw, next_state_raw, obs_raw, prob):
         '''
@@ -436,16 +441,17 @@ class POMDPEnvironment:
         print ""
         print "R:", self.R
 
+
 class POMDPPolicy:
     '''
     Attributes:
-        action_nums    The full list of action (numbers) from the alpha vectors.
-                       In other words, this saves the action number from each
-                       alpha vector and nothing else, but in the order of the
-                       alpha vectors.
+        action_nums    The full list of action (numbers) from the alpha
+                       vectors. In other words, this saves the action
+                       number from each alpha vector and nothing else,
+                       but in the order of the alpha vectors.
 
-        pMatrix        The policy matrix, constructed from all of the alpha
-                       vectors.
+        pMatrix        The policy matrix, constructed from all of the
+                       alpha vectors.
     '''
     def __init__(self, filename):
         tree = parse(filename)
@@ -470,113 +476,3 @@ class POMDPPolicy:
         highest_expected_reward = res.max()
         best_action = self.action_nums[res.argmax()]
         return (best_action, highest_expected_reward)
-
-def pomdp_env_test():
-    '''
-    Tests the POMDPEnvironment class by loading an example environment and
-    checking that all the values it saved were as expected.
-    '''
-    # load POMDP
-    pomdpfile = "examples/env/env_parser_test.pomdp"
-    print 'Loading POMDP environment from', pomdpfile
-    mypomdp = POMDPEnvironment(pomdpfile)
-    print ' * done'
-
-    testdiscount = 0.95
-    testvalues = 'reward'
-    teststates = ['heavy', 'light', 'novel']
-    testactions = ['ask', 'sayHeavy', 'sayLight', 'sayNovel']
-    testobservations = ['hearHeavy', 'hearLight', 'hearNovel']
-
-    print 'Checking model'
-
-    # do header checks
-    print ' * checking headers'
-    assert mypomdp.discount == testdiscount
-    assert mypomdp.values == testvalues
-    assert mypomdp.states == teststates
-    assert mypomdp.actions == testactions
-    assert mypomdp.observations == testobservations
-
-    # check transition values
-    # ask should be identity; all other actions should have the same vals
-    print ' * checking transitions'
-    for i in range(len(testactions)):
-        if i == 0:
-            # ask action
-            for j in range(len(teststates)):
-                for k in range(len(teststates)):
-                    expect = 1 if j == k else 0
-                    assert mypomdp.T[(i,j,k)] == expect
-        else:
-            # all other actions
-            for j in range(len(teststates)):
-                assert mypomdp.T[(i,j,0)] == 0.4
-                assert mypomdp.T[(i,j,1)] == 0.4
-                assert mypomdp.T[(i,j,2)] == 0.2
-
-    # check observation values
-    # ask should have hand-tuned values; others should be uniform
-    print ' * checking observation function'
-    for i in range(len(testobservations)):
-        if i == 0:
-            # O: ask
-            # 0.7 0.01 0.29
-            # 0.01 0.7 0.29
-            # 0.1 0.1 0.8
-            assert mypomdp.Z[(0,0,0)] == 0.7
-            assert mypomdp.Z[(0,0,1)] == 0.01
-            assert mypomdp.Z[(0,0,2)] == 0.29
-            assert mypomdp.Z[(0,1,0)] == 0.01
-            assert mypomdp.Z[(0,1,1)] == 0.7
-            assert mypomdp.Z[(0,1,2)] == 0.29
-            assert mypomdp.Z[(0,2,0)] == 0.1
-            assert mypomdp.Z[(0,2,1)] == 0.1
-            assert mypomdp.Z[(0,2,2)] == 0.8
-        else:
-            # all other actions
-            expect = 1.0 / float(len(testobservations))
-            for j in range(len(teststates)):
-                for k in range(len(testobservations)):
-                    assert mypomdp.Z[(i,j,k)] == expect
-
-    # check some rewards
-    print ' * checking rewards'
-    # R: ask : * : * : * -1
-    for i in range(len(teststates)):
-        for j in range(len(teststates)):
-            for k in range(len(testobservations)):
-                assert mypomdp.R[(0,i,j,k)] == -1
-
-    # R: sayHeavy : heavy : * : * 5
-    # R: sayHeavy : light : * : * -10
-    # R: sayHeavy : novel : * : * -2
-    for j in range(len(teststates)):
-        for k in range(len(testobservations)):
-            assert mypomdp.R[(1,0,j,k)] == 5
-            assert mypomdp.R[(1,1,j,k)] == -10
-            assert mypomdp.R[(1,2,j,k)] == -2                       
-
-    # R: sayLight : heavy : * : * -10
-    # R: sayLight : light : * : * 5
-    # R: sayLight : novel : * : * -2
-    for j in range(len(teststates)):
-        for k in range(len(testobservations)):
-            assert mypomdp.R[(2,0,j,k)] == -10
-            assert mypomdp.R[(2,1,j,k)] == 5
-            assert mypomdp.R[(2,2,j,k)] == -2   
-
-    # R: sayNovel : light : * : * -2
-    # R: sayNovel : heavy : * : * -2
-    # R: sayNovel : novel : * : * 5
-    for j in range(len(teststates)):
-        for k in range(len(testobservations)):
-            assert mypomdp.R[(3,0,j,k)] == -2
-            assert mypomdp.R[(3,1,j,k)] == -2
-            assert mypomdp.R[(3,2,j,k)] == 5
-
-    print ' * done'
-
-# Program enters here.
-if __name__ == "__main__":
-    pomdp_env_test()

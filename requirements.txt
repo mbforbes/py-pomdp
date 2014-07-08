@@ -1,0 +1,4 @@
+elementtree
+numpy
+coverage
+python-coveralls

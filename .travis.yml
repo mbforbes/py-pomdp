@@ -1,0 +1,10 @@
+language: python
+python:
+	- "2.7"
+install:
+	- pip install -r requirements.txt
+script:
+	- pep8 pomdp.py test/tester.py
+	- coverage run --source pomdp test/tester.py
+after_success:
+	- coveralls

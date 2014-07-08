@@ -113,8 +113,16 @@ $ python pomdp.py
 ```
 
 ## Requirements
-* [ElementTree](http://effbot.org/zone/element-index.htm)
-* [Numpy](http://www.numpy.org/)
+* [ElementTree](http://effbot.org/zone/element-index.htm)  (for loading policy)
+* [Numpy](http://www.numpy.org/)  (general)
+* [pep8]()  (for tests)
+* [Coverage]()  (for tests)
+* [Coveralls]()  (for tests)
+
+```bash
+# Install all requirements with pip:
+$ sudo pip install -r requirements.txt
+```
 
 ## Resources
 * For a great intro to POMDPs, see section 2.1 of [this paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf) by Jason Williams.
