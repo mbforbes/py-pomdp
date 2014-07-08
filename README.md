@@ -108,7 +108,7 @@ The supported POMDP policy is a list of alpha vectors in XML. For more info, see
 
 ## Tests
 ```bash
-# Run the tests (current: environment parser test)
+# Run the tests (currently: environment parser test)
 # (loads from examples/env/env_parser_test.pomdp)
 $ coverage run --source pomdp test/tester.py
 
