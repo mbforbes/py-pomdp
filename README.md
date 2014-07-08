@@ -107,9 +107,13 @@ The supported POMDP policy is a list of alpha vectors in XML. For more info, see
 * [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html) to learn more about approximate solvers and the policies they produce
 
 ## Tests
-You can run the environment parser test (loads from `examples/env/env_parser_test.pomdp`) as follows:
 ```bash
-$ python pomdp.py
+# Run the tests (current: environment parser test)
+# (loads from examples/env/env_parser_test.pomdp)
+$ coverage run --source pomdp test/tester.py
+
+# Generate html coverage report; afterwards, point browser to htmlcov/index.html
+$ coverage html
 ```
 
 ## Requirements
