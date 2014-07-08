@@ -37,9 +37,11 @@ import numpy as np
 from pomdp import *
 
 # Load 'full POMDP' using env, policy, and belief prior.
-pomdp = POMDP('examples/env/voicemail.pomdp', # env
-	'examples/policy/voicemail.policy', # policy
-	np.array([[0.65], [0.35]])) # prior
+pomdp = POMDP(
+    'examples/env/voicemail.pomdp',  # env
+	'examples/policy/voicemail.policy',  # policy
+	np.array([[0.65], [0.35]])  # prior
+)
 
 # Let's try some belief updates with the full POMDP.
 observations = ['hearDelete', 'hearSave', 'hearSave']
@@ -113,7 +115,7 @@ The supported POMDP policy is a list of alpha vectors in XML. For more info, see
 # Run bare tests
 $ pytest -m test.tester
 
-# Run the tests
+# Run the tests with code coverage
 $ coverage run --source pomdp test/tester.py
 
 # Generate html coverage report; afterwards, point browser to htmlcov/index.html
