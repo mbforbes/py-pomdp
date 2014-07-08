@@ -1,5 +1,6 @@
 elementtree
 numpy
 pep8
+pytest
 coverage
 python-coveralls

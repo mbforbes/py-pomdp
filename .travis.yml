@@ -5,6 +5,6 @@ install:
     - sudo pip install -r requirements.txt --allow-external elementtree --allow-unverified elementtree
 script:
     - pep8 pomdp.py test/tester.py
-    - coverage run --source pomdp test/tester.py
+    - coverage run --source pomdp -m test.tester
 after_success:
     - coveralls
