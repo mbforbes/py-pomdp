@@ -18,8 +18,8 @@ from numpy import *
 
 class POMDP:
     '''
-    Class that a user should interact with. Contains a POMDP environment and
-    policy.
+    Class that a user should interact with. Contains a POMDP environment
+    and policy.
 
     Attributes:
         pomdpenv    POMDPEnvironment
@@ -73,8 +73,9 @@ class POMDP:
 
     def belief_dump(self):
         '''
-        Used for debugging a two state POMDP. Sets the belief to a whole bunch
-        of different values and outputs the optimal action for each.
+        Used for debugging a two state POMDP. Sets the belief to a whole
+        bunch of different values and outputs the optimal action for
+        each.
         '''
         # adjust to change granularity
         increment = 0.01
@@ -116,7 +117,8 @@ class POMDPEnvironment:
             if (not (x.startswith("#") or x.isspace()))
         ]
 
-        # set up transition function T, observation function Z, and reward R
+        # set up transition function T, observation function Z, and
+        # reward R
         self.T = {}
         self.Z = {}
         self.R = {}
@@ -153,7 +155,8 @@ class POMDPEnvironment:
         return i + 1
 
     def __get_value(self, i):
-        # Currently just supports "values: reward". I.e. currently meaningless.
+        # Currently just supports "values: reward". I.e. currently
+        # meaningless.
         line = self.contents[i]
         self.values = line.split()[1]
         return i + 1
@@ -310,16 +313,17 @@ class POMDPEnvironment:
 
     def __get_reward(self, i):
         '''
-        Wild card * are allowed when specifying a single reward probability.
-        They are not allowed when specifying a vector or matrix of
-        probabilities.
+        Wild card * are allowed when specifying a single reward
+        probability. They are not allowed when specifying a vector or
+        matrix of probabilities.
         '''
         line = self.contents[i]
         pieces = [x for x in line.split() if (x.find(':') == -1)]
         action = self.actions.index(pieces[0])
 
         if len(pieces) == 5 or len(pieces) == 4:
-            # case 1: R: <action> : <start-state> : <next-state> : <obs> %f
+            # case 1:
+            # R: <action> : <start-state> : <next-state> : <obs> %f
             # any of <start-state>, <next-state>, and <obs> can be *
             # %f can be on the next line (case where len(pieces) == 4)
             start_state_raw = pieces[1]
@@ -363,9 +367,9 @@ class POMDPEnvironment:
 
     def __reward_ss(self, a, start_state_raw, next_state_raw, obs_raw, prob):
         '''
-        reward_ss means we're at the start state of the unrolling of the reward
-        expression. start_state_raw could be * or the name of the real start
-        state.
+        reward_ss means we're at the start state of the unrolling of the
+        reward expression. start_state_raw could be * or the name of the
+        real start state.
         '''
         if start_state_raw == '*':
             for i in range(len(self.states)):
@@ -376,9 +380,10 @@ class POMDPEnvironment:
 
     def __reward_ns(self, a, start_state, next_state_raw, obs_raw, prob):
         '''
-        reward_ns means we're at the next state of the unrolling of the reward
-        expression. start_state is the number of the real start state, and
-        next_state_raw could be * or the name of the real next state.
+        reward_ns means we're at the next state of the unrolling of the
+        reward expression. start_state is the number of the real start
+        state, and next_state_raw could be * or the name of the real
+        next state.
         '''
         if next_state_raw == '*':
             for i in range(len(self.states)):
@@ -389,10 +394,10 @@ class POMDPEnvironment:
 
     def __reward_ob(self, a, start_state, next_state, obs_raw, prob):
         '''
-        reward_ob means we're at the observation of the unrolling of the reward
-        expression. start_state is the number of the real start state,
-        next_state is the number of the real next state, and obs_raw could be *
-        or the name of the real observation.
+        reward_ob means we're at the observation of the unrolling of the
+        reward expression. start_state is the number of the real start
+        state, next_state is the number of the real next state, and
+        obs_raw could be * or the name of the real observation.
         '''
         if obs_raw == '*':
             for i in range(len(self.observations)):
@@ -403,8 +408,8 @@ class POMDPEnvironment:
 
     def update_belief(self, prev_belief, action_num, observation_num):
         '''
-        Note that a POMDPEnvironment doesn't hold beliefs, so this takes and
-        returns a belief vector.
+        Note that a POMDPEnvironment doesn't hold beliefs, so this takes
+        and returns a belief vector.
 
         prev_belief     numpy array
         action_num      int
@@ -470,7 +475,8 @@ class POMDPPolicy:
 
     def get_best_action(self, belief):
         '''
-        Returns tuple (best-action-num, expected-reward-for-this-action).
+        Returns tuple:
+            (best-action-num, expected-reward-for-this-action).
         '''
         res = self.pMatrix.dot(belief)
         highest_expected_reward = res.max()
