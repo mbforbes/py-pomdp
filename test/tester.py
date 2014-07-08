@@ -3,6 +3,8 @@
 __author__ = 'mbforbes'
 
 # Builtins
+import sys
+sys.path.append('..')  # Allows import of pomdp
 import unittest
 
 # Local
