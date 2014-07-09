@@ -114,11 +114,8 @@ The supported POMDP policy is a list of alpha vectors in XML. For more info, see
 
 ## Tests
 ```bash
-# Run bare tests
-$ pytest -m test.tester
-
 # Run the tests with code coverage
-$ coverage run --source pomdp test/tester.py
+$ coverage run --source pomdp -m test.tester
 
 # Generate html coverage report; afterwards, point browser to htmlcov/index.html
 $ coverage html
@@ -128,7 +125,6 @@ $ coverage html
 * [ElementTree](http://effbot.org/zone/element-index.htm)  (for loading policy)
 * [Numpy](http://www.numpy.org/)  (general)
 * [pep8](https://github.com/jcrocholl/pep8)  (for tests)
-* [pytest](http://pytest.org/latest/)  (for tests)
 * [Coverage](http://nedbatchelder.com/code/coverage/)  (for tests)
 * [Coveralls](https://github.com/z4r/python-coveralls)  (for tests)
 
