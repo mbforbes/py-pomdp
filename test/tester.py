@@ -3,9 +3,10 @@
 __author__ = 'mbforbes'
 
 # Builtins
+import os
 import sys
-sys.path.append('..')  # Allows import of pomdp
 import unittest
+
 
 # 3rd party
 import numpy as np
@@ -213,6 +214,21 @@ class POMDPEndToEndTest(unittest.TestCase):
         for idx, b in enumerate(belief):
             self.assertFloatsWithinEpsilon(b, expected_beliefs[-1][idx])
 
+    def test_dumps(self):
+        '''Extremely basic test to ensure that belief / overview
+        printing (dumping) don't crash.
+
+        (Ahem... they've been previously emperically verified...)
+        '''
+        # Stop from printing
+        sys.stdout = open(os.devnull, "w")
+
+        # Do the dumps.
+        self.pomdp.belief_dump()
+        self.pomdp.pomdpenv.print_summary()
+
+        # Re-enable printing.
+        sys.stdout = sys.__stdout__
 
 if __name__ == '__main__':
     unittest.main()
