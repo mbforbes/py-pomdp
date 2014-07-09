@@ -3,7 +3,7 @@ python:
     - "2.7"
 install:
 # Because compiling numpy from source is stupid, error-prone, and takes forever
-	- sudo apt-get install python-numpy
+    - sudo apt-get install python-numpy
 # The rest
     - sudo pip install elementtree pep8 coverage python-coveralls --allow-external elementtree --allow-unverified elementtree
 script:
