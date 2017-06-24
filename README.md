@@ -1,10 +1,10 @@
 # py-pomdp
 [![Build Status](https://travis-ci.org/mbforbes/py-pomdp.svg?branch=master)](https://travis-ci.org/mbforbes/py-pomdp)
 [![Coverage Status](https://img.shields.io/coveralls/mbforbes/py-pomdp.svg)](https://coveralls.io/r/mbforbes/py-pomdp?branch=master)
-[![license MIT](http://b.repl.ca/v1/license-MIT-brightgreen.png)](
-https://github.com/mbforbes/py-pomdp/blob/master/LICENSE.txt)
+[![license MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/mbforbes/py-pomdp/blob/master/LICENSE.txt)
 
-A small tool to parse POMDP environments and policies, load them into Python objects, and provide methods for belief updates and accessing data.
+A small library to parse POMDP environments and policies, load them into Python
+objects, and provide methods for updating beliefs and accessing data.
 
 ## Usage
 
