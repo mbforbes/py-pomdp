@@ -1,4 +1,5 @@
 # py-pomdp
+
 [![Build Status](https://travis-ci.org/mbforbes/py-pomdp.svg?branch=master)](https://travis-ci.org/mbforbes/py-pomdp)
 [![Coverage Status](https://img.shields.io/coveralls/mbforbes/py-pomdp.svg)](https://coveralls.io/r/mbforbes/py-pomdp?branch=master)
 [![license MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mbforbes/py-pomdp/blob/master/LICENSE.txt)
@@ -101,39 +102,62 @@ Round 4
 ## File specifications
 
 ### Environment (`.pomdp`)
-For the supported POMDP environment spec, see [Tony's POMDP file format description](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-spec.html)
 
-I built the tool to work with the semantics described on that page, without consulting the [formal grammar](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-grammar.html). If anyone uses this tool and discovers it lacks support for syntax they require, I welcome issues as well as pull requests!
+For the supported POMDP environment spec, see [Tony's POMDP file format
+description](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-spec.html)
+
+I built the tool to work with the semantics described on that page, without
+consulting the [formal
+grammar](http://cs.brown.edu/research/ai/pomdp/examples/pomdp-file-grammar.html).
+If anyone uses this tool and discovers it lacks support for syntax they
+require, I welcome issues as well as pull requests!
 
 ### Policy (`.policy`)
 
 The supported POMDP policy is a list of alpha vectors in XML. For more info, see:
+
 * the file `examples/policy/voicemail.policy` in this repository for an example
-* [APPL](http://bigbird.comp.nus.edu.sg/pmwiki/farm/appl/index.php?n=Main.HomePage) for a solver that outputs this format
-* [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html) to learn more about approximate solvers and the policies they produce
+
+* [APPL](http://bigbird.comp.nus.edu.sg/pmwiki/farm/appl/index.php?n=Main.HomePage)
+  for a solver that outputs this format
+
+* [Tony's Tutorials](http://cs.brown.edu/research/ai/pomdp/tutorial/index.html)
+  to learn more about approximate solvers and the policies they produce
 
 ## Tests
+
 ```bash
-# Run the tests with code coverage
-$ coverage run --source pomdp -m test.tester
+# Install tools for linting and code coverage
+pip install pep8 coverage
+
+# Lint
+pep8 pomdp.py test/tester.py
+
+# Run tests with code coverage
+coverage run --source pomdp -m test.tester
 
 # Generate html coverage report; afterwards, point browser to htmlcov/index.html
-$ coverage html
+coverage html
 ```
 
 ## Requirements
-* [ElementTree](http://effbot.org/zone/element-index.htm)  (for loading policy)
+
 * [Numpy](http://www.numpy.org/)  (general)
-* [pep8](https://github.com/jcrocholl/pep8)  (for tests)
-* [Coverage](http://nedbatchelder.com/code/coverage/)  (for tests)
-* [Coveralls](https://github.com/z4r/python-coveralls)  (for tests)
+* [ElementTree](http://effbot.org/zone/element-index.htm)  (for loading policy)
 
 ```bash
-# Install all requirements with pip:
-$ sudo pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Resources
-* For a great intro to POMDPs, see section 2.1 of [this paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf) by Jason Williams.
-* For a solver that takes the supported environment format as input, and outputs the supported policy format, see [APPL](http://bigbird.comp.nus.edu.sg/pmwiki/farm/appl/index.php?n=Main.HomePage).
-* For lots of information about POMDPs, see [Tony's POMDP Page](http://cs.brown.edu/research/ai/pomdp/).
+
+* For a great intro to POMDPs, see section 2.1 of [this
+  paper](http://research.microsoft.com/pubs/160935/williams2007csl.pdf) by
+  Jason Williams.
+
+* For a solver that takes the supported environment format as input, and
+  outputs the supported policy format, see
+  [APPL](http://bigbird.comp.nus.edu.sg/pmwiki/farm/appl/index.php?n=Main.HomePage).
+
+* For lots of information about POMDPs, see [Tony's POMDP
+  Page](http://cs.brown.edu/research/ai/pomdp/).
