@@ -2,11 +2,16 @@ language: python
 python:
     - "2.7"
 install:
-    - pip install -r requirements.txt
+    # not using requirements.txt because travis freaks out about elementtree
+    - pip install numpy elementtree --allow-external elementtree --allow-unverified elementtree
 before_script:
-    - pip install pep8 coverage python-coveralls --allow-external elementtree --allow-unverified elementtree
+    # for linting / testing / code coverage only
+    - pip install pep8 coverage python-coveralls
 script:
+    # lint
     - pep8 pomdp.py test/tester.py
+    # test; generate code coverage
     - coverage run --source pomdp -m test.tester
 after_success:
+    # upload code coverage
     - coveralls
