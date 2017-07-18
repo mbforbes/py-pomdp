@@ -5,7 +5,13 @@
 [![license MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mbforbes/py-pomdp/blob/master/LICENSE.txt)
 
 A small library to parse POMDP environments and policies, load them into Python
-objects, and provide methods for updating beliefs and accessing data.
+objects, and provide methods for updating beliefs and accessing data. Depends only on [numpy](http://www.numpy.org/).
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
@@ -138,15 +144,6 @@ coverage run --source pomdp -m test.tester
 
 # Generate html coverage report; afterwards, point browser to htmlcov/index.html
 coverage html
-```
-
-## Requirements
-
-* [Numpy](http://www.numpy.org/)  (general)
-* [ElementTree](http://effbot.org/zone/element-index.htm)  (for loading policy)
-
-```bash
-pip install -r requirements.txt
 ```
 
 ## Resources

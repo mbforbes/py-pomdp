@@ -1,29 +1,30 @@
-'''Basic tester for py-pomdp.'''
+"""
+Basic tester for py-pomdp.
 
-__author__ = 'mbforbes'
+author: mbforbes
+"""
 
-# Builtins
+# builtins
 import os
 import sys
 import unittest
 
-
 # 3rd party
 import numpy as np
 
-# Local
+# local
 import pomdp
 
 
 class POMDPEnvTest(unittest.TestCase):
-    '''Tests the loading of the POMDP Environment.'''
+    """Tests loading the POMDP Environment."""
 
     def setUp(self):
-        '''Load the POMDP Environment before each test.
+        """Load the POMDP Environment before each test.
 
         This is a bit excessive, but it's quick and eliminates shared
         state across tests.
-        '''
+        """
         # Load pomdp
         pomdpfile = "examples/env/env_parser_test.pomdp"
         # print 'Loading POMDP environment from', pomdpfile
@@ -37,7 +38,7 @@ class POMDPEnvTest(unittest.TestCase):
         self.testobservations = ['hearHeavy', 'hearLight', 'hearNovel']
 
     def test_headers(self):
-        '''Tests that the header values are as expected.'''
+        """Tests that the header values are as expected."""
         self.assertEqual(self.mypomdp.discount, self.testdiscount)
         self.assertEqual(self.mypomdp.values, self.testvalues)
         self.assertEqual(self.mypomdp.states, self.teststates)
@@ -45,11 +46,11 @@ class POMDPEnvTest(unittest.TestCase):
         self.assertEqual(self.mypomdp.observations, self.testobservations)
 
     def test_transitions(self):
-        '''Check transition values.
+        """Check transition values.
 
         Ask should be identity; all other actions should have the same
         vals.
-        '''
+        """
         for i in range(len(self.testactions)):
             if i == 0:
                 # ask action
@@ -65,10 +66,10 @@ class POMDPEnvTest(unittest.TestCase):
                     self.assertEqual(self.mypomdp.T[(i, j, 2)], 0.2)
 
     def test_observations(self):
-        '''Check observation values.
+        """Check observation values.
 
         Ask should have hand-tuned values; others should be uniform.
-        '''
+        """
         for i in range(len(self.testobservations)):
             if i == 0:
                 # O: ask
@@ -92,7 +93,7 @@ class POMDPEnvTest(unittest.TestCase):
                         assert self.mypomdp.Z[(i, j, k)] == expect
 
     def test_rewards(self):
-        '''Check the rewards are as expected.'''
+        """Check the rewards are as expected."""
         # R: ask : * : * : * -1
         for i in range(len(self.teststates)):
             for j in range(len(self.teststates)):
@@ -128,13 +129,13 @@ class POMDPEnvTest(unittest.TestCase):
 
 
 class POMDPEndToEndTest(unittest.TestCase):
-    '''Tests the loading of a 'full' POMDP (environment and policy),
-    performs belief updates, and gets expected rewards.'''
+    """Tests the loading of a 'full' POMDP (environment and policy),
+    performs belief updates, and gets expected rewards."""
 
     def setUp(self):
-        '''Load the 'full' POMDP (environment and policy) before each
+        """Load the 'full' POMDP (environment and policy) before each
         test.
-        '''
+        """
         # Load pomdp
         self.pomdp = pomdp.POMDP(
             'examples/env/voicemail.pomdp',  # env
@@ -146,23 +147,23 @@ class POMDPEndToEndTest(unittest.TestCase):
         self.float_epsilon = 0.01
 
     def assertFloatsWithinEpsilon(self, a, b):
-        '''Asserts that two floats are within epsilon of eachother.
+        """Asserts that two floats are within epsilon of eachother.
 
         Args:
             a (float)
             b (float)
             epsilon (float): How close a and b can be
-        '''
+        """
         self.assertTrue(
             a - self.float_epsilon <= b if a > b
             else b - self.float_epsilon <= a)
 
     def test_belief_updates(self):
-        '''Provide observations and do belief updates. Check:
+        """Provide observations and do belief updates. Check:
             - actions
             - expected reward
             - belief
-        '''
+        """
         expected_actions = ['ask', 'ask', 'ask', 'doSave']
         expected_rewards = [3.46, 2.91, 3.13, 5.14]
         expected_beliefs = [
@@ -215,11 +216,11 @@ class POMDPEndToEndTest(unittest.TestCase):
             self.assertFloatsWithinEpsilon(b, expected_beliefs[-1][idx])
 
     def test_dumps(self):
-        '''Extremely basic test to ensure that belief / overview
+        """Extremely basic test to ensure that belief / overview
         printing (dumping) don't crash.
 
         (Ahem... they've been previously emperically verified...)
-        '''
+        """
         # Stop from printing
         sys.stdout = open(os.devnull, "w")
 
