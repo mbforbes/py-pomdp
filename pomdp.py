@@ -27,6 +27,7 @@ class POMDP:
         pomdppolicy POMDPPolicy
         belief      numpy array
     """
+
     def __init__(self, pomdp_env_filename, pomdp_policy_filename, prior):
         """
         pomdp_env_filename    string
@@ -163,19 +164,27 @@ class POMDPEnvironment:
         return i + 1
 
     def __get_states(self, i):
-        # TODO support states as number
         line = self.contents[i]
         self.states = line.split()[1:]
+        if is_numeric(self.states):
+            no_states = int(self.states[0])
+            self.states = [str(x) for x in range(no_states)]
         return i + 1
 
     def __get_actions(self, i):
         line = self.contents[i]
         self.actions = line.split()[1:]
+        if is_numeric(self.actions):
+            no_actions = int(self.actions[0])
+            self.actions = [str(x) for x in range(no_actions)]
         return i + 1
 
     def __get_observations(self, i):
         line = self.contents[i]
         self.observations = line.split()[1:]
+        if is_numeric(self.observations):
+            no_observations = int(self.observations[0])
+            self.observations = [str(x) for x in range(no_observations)]
         return i + 1
 
     def __get_transition(self, i):
@@ -241,14 +250,18 @@ class POMDPEnvironment:
                         prob = float(probs[k])
                         self.T[(action, j, k)] = prob
                     next_line = self.contents[i+2+j]
-                return i+1+len(self.states)
+                return i + 1 + len(self.states)
         else:
             raise Exception("Cannot parse line " + line)
 
     def __get_observation(self, i):
         line = self.contents[i]
         pieces = [x for x in line.split() if (x.find(':') == -1)]
-        action = self.actions.index(pieces[0])
+        if pieces[0] == "*":
+            # Case when action does not affect observation
+            action = None
+        else:
+            action = self.actions.index(pieces[0])
 
         if len(pieces) == 4:
             # case 1: O: <action> : <next-state> : <obs> %f
@@ -320,7 +333,10 @@ class POMDPEnvironment:
         """
         line = self.contents[i]
         pieces = [x for x in line.split() if (x.find(':') == -1)]
-        action = self.actions.index(pieces[0])
+        if pieces[0] == "*":
+            action = None
+        else:
+            action = self.actions.index(pieces[0])
 
         if len(pieces) == 5 or len(pieces) == 4:
             # case 1:
@@ -459,6 +475,7 @@ class POMDPPolicy:
         pMatrix        The policy matrix, constructed from all of the
                        alpha vectors.
     """
+
     def __init__(self, filename):
         tree = ET.parse(filename)
         root = tree.getroot()
@@ -483,3 +500,14 @@ class POMDPPolicy:
         highest_expected_reward = res.max()
         best_action = self.action_nums[res.argmax()]
         return (best_action, highest_expected_reward)
+
+
+def is_numeric(lst):
+    if len(lst) == 1:
+        try:
+            int(lst[0])
+            return True
+        except Exception:
+            return False
+    else:
+        return False
